@@ -6,7 +6,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import dagger.hilt.android.HiltAndroidApp
 import dagger.hilt.android.lifecycle.HiltViewModel
 
-@HiltAndroidApp
-class HiltApplication : Application()
+class GameApp : Application(){
 
-
+}

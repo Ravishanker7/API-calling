@@ -7,31 +7,26 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.apitest.NetworkResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
-@HiltViewModel
-class ViewModel @Inject constructor(private val apiService: ApiService) : ViewModel() {
-    private val _games=MutableLiveData<List<GameModelItem>>()
-
-    val games : LiveData<List<GameModelItem>> = _games
-
+class HomeViewModel (private val movieRepogistory: MovieRepogistory): ViewModel() {
 
     init {
-        fetchGames()
+        callMovieApi()
     }
 
-    fun fetchGames(){
+    fun callMovieApi() {
         viewModelScope.launch {
-            try{
-                val response=apiService.getAllgames()
-                _games.value=response
-                Log.e("games",response.toString())
-            }catch (e:Exception){
-                Log.e("error",e.message.toString())
-            }
+            movieRepogistory.getAllMovieList()
         }
     }
+
+
+    val movieResponse : MutableStateFlow<NetworkResponse<List<GameModelItem>>>
+        get() = movieRepogistory.mutableMovieDataState
 }

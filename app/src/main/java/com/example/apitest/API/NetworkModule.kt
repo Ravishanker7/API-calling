@@ -10,30 +10,11 @@ import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 
-@Module
-@InstallIn(SingletonComponent::class)
-class NetworkModule {
-
-    @Provides
-    @Singleton
-    fun provideOkHttpClient() : OkHttpClient{
-        return OkHttpClient.Builder()
-            .build()
-    }
-
-    @Provides
-    @Singleton
-    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit{
+object RetrofitConnection {
+    fun getInstance(): ApiService {
         return Retrofit.Builder()
-            .baseUrl("https://www.freetogame.com/api")
-            .client(okHttpClient)
+            .baseUrl("https://www.freetogame.com/api/")
             .addConverterFactory(GsonConverterFactory.create())
-            .build()
-    }
-
-    @Provides
-    @Singleton
-    fun provideApiService(retrofit: Retrofit): ApiService{
-        return retrofit.create(ApiService::class.java)
+            .build().create(ApiService::class.java)
     }
 }
